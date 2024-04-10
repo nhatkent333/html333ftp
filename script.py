@@ -30,21 +30,25 @@ csv_reader = csv.DictReader(StringIO(csv_data))
 for row in csv_reader:
     slug = row['slug']
     html_code = row['html']
-    file_name = slug + '.html'
-    
-    # Tạo file HTML và ghi nội dung
-    with open(file_name, 'w') as file:
-        file.write(html_code)
-    
-    # Tải file lên FTP
-    with open(file_name, 'rb') as file:
-      try:
-          ftp.storbinary(f'STOR {file_name}', file)
-      except Exception as e:
-          print(f"Error uploading file {file_name}: {e}")
+    if html_code is not None:
+        file_name = slug + '.html'
 
-    # Xóa file HTML cục bộ sau khi đã tải lên FTP
-    os.remove(file_name)
+        # Tạo file HTML và ghi nội dung
+        with open(file_name, 'w') as file:
+            file.write(html_code)
+
+        # Tải file lên FTP
+        with open(file_name, 'rb') as file:
+          try:
+              ftp.storbinary(f'STOR {file_name}', file)
+          except Exception as e:
+              print(f"Error uploading file {file_name}: {e}")
+
+        # Xóa file HTML cục bộ sau khi đã tải lên FTP
+        os.remove(file_name)
+    else:
+        print(f"html_code is None for slug {slug}, skipping...")
+
 
 # Đóng kết nối FTP
 ftp.quit()
