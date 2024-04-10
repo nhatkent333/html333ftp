@@ -1,16 +1,16 @@
-name: Upload HTML to FTP
+name: FTP Upload
 
 on:
   push:
     branches:
-      - main  # Thay main bằng tên branch của bạn
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Set up Python
@@ -20,11 +20,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install --upgrade gspread google-auth
+        python -m pip install --upgrade pip
+        pip install requests
 
     - name: Run Python script
-      run: |
-        python script.py  # Thay script.py bằng tên của file Python chứa code của bạn
+      run: python script.py
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
