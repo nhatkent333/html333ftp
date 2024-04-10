@@ -17,7 +17,7 @@ upload_directory = '/currency'
 ftp.cwd(upload_directory)  
 
 # Đường dẫn của file CSV trên Google Drive
-drive_csv_url = 'data.csv'
+drive_csv_url = 'https://github.com/nhatkent333/html333ftp/blob/788bc1aad19d0a1da91cb10cdbbb0929bbd21506/data.csv'
 
 # Lấy dữ liệu từ file CSV trên Google Drive
 response = requests.get(drive_csv_url)
