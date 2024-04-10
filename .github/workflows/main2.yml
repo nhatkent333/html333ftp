@@ -28,9 +28,7 @@ jobs:
 
     - name: Upload HTML files to FTP
       uses: appleboy/ftp-action@master
-      with:
-        host: ${{ secrets.FTP_HOST }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local_dir: .github/workflows  # Thư mục chứa các file HTML cần tải lên
-        remote_dir: /currency  # Thư mục trên FTP để tải lên
+      env:
+        FTP_HOST: ${{ secrets.FTP_HOST }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
