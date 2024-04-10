@@ -17,8 +17,13 @@ tab_name = 'export'
 worksheet = gc.open_by_key(sheet_id).worksheet(tab_name)
 data = worksheet.get_all_records()
 
+# Lấy giá trị của các biến môi trường từ secrets
+ftp_host = os.getenv('FTP_HOST')
+ftp_username = os.getenv('FTP_USERNAME')
+ftp_password = os.getenv('FTP_PASSWORD')
+
 # Kết nối đến FTP
-ftp = FTP('103.42.57.100', 'tool', 'aaztZ5FWATmmXiyF')
+ftp = FTP(ftp_host, ftp_username, ftp_password)
 
 # Đặt thư mục trên FTP để tải lên
 upload_directory = '/currency'
