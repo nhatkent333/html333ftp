@@ -1,23 +1,10 @@
-from google.colab import auth
-import gspread
-from google.auth import default
-from ftplib import FTP
 import os
+from ftplib import FTP
+import csv
+import requests
+from io import StringIO
 
-# Autenticating to Google
-auth.authenticate_user()
-creds, _ = default()
-gc = gspread.authorize(creds)
-
-# ID của bảng Google Sheets và tên của tab
-sheet_id = '1VM8WL63eMLcHHxmrDjGpkCDQqGQMKiyeUIU8JCj9Fbw'
-tab_name = 'export'
-
-# Mở tab cụ thể trong bảng và lấy dữ liệu
-worksheet = gc.open_by_key(sheet_id).worksheet(tab_name)
-data = worksheet.get_all_records()
-
-# Lấy giá trị của các biến môi trường từ secrets
+# Lấy thông tin kết nối FTP từ secrets của GitHub Actions
 ftp_host = os.getenv('FTP_HOST')
 ftp_username = os.getenv('FTP_USERNAME')
 ftp_password = os.getenv('FTP_PASSWORD')
@@ -29,8 +16,18 @@ ftp = FTP(ftp_host, ftp_username, ftp_password)
 upload_directory = '/currency'
 ftp.cwd(upload_directory)  
 
-# Duyệt qua từng dòng trong dữ liệu và tạo file HTML
-for row in data:
+# Đường dẫn của file CSV trên Google Drive
+drive_csv_url = 'https://drive.google.com/uc?id=1yFdQqt66OTLiZqCEdL83GGd0Z3sRvctw'
+
+# Lấy dữ liệu từ file CSV trên Google Drive
+response = requests.get(drive_csv_url)
+csv_data = response.text
+
+# Đọc dữ liệu CSV
+csv_reader = csv.DictReader(StringIO(csv_data))
+
+# Duyệt qua từng dòng trong dữ liệu CSV và tạo file HTML
+for row in csv_reader:
     slug = row['slug']
     html_code = row['html']
     file_name = slug + '.html'
