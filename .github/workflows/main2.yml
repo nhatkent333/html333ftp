@@ -32,5 +32,5 @@ jobs:
         host: ${{ secrets.FTP_HOST }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local_dir: usd_vnd  # Thư mục chứa các file HTML cần tải lên
+        local_dir: /  # Thư mục chứa các file HTML cần tải lên
         remote_dir: /currency  # Thư mục trên FTP để tải lên
