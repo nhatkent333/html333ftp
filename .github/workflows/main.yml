@@ -1,0 +1,37 @@
+name: Upload HTML to FTP
+
+on:
+  push:
+    branches:
+      - main  # Thay main bằng tên branch của bạn
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade gspread google-auth
+
+    - name: Run Python script
+      run: |
+        python script.py  # Thay script.py bằng tên của file Python chứa code của bạn
+
+    - name: Upload HTML files to FTP
+      uses: appleboy/ftp-action@master
+      with:
+        host: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local_dir: .  # Thư mục chứa các file HTML cần tải lên
+        remote_dir: /currency  # Thư mục trên FTP để tải lên
+
